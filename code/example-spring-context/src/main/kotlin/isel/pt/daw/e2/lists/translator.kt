@@ -41,7 +41,7 @@ fun main() {
     val translator = context.getBean(Translator::class.java)
 
     println(translator.translate("Hello", "pt"))
-    println(translator.translate("Hello", "en"))
+    println(translator.translate("Hello", "es"))
     println(translator.translate("Hello", "sv"))
 
     /*

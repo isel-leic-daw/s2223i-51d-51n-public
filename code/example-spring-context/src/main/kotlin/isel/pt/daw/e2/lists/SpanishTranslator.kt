@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component
 class SpanishTranslator : LanguageTranslator {
 
     override fun translate(englishWord: String): String? = map[englishWord]
-    override val targetLanguage: String = "en"
+    override val targetLanguage: String = "es"
 
     companion object {
         private val map = mapOf(

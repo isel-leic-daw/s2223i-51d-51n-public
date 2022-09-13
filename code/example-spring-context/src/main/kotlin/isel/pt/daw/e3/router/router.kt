@@ -13,8 +13,6 @@ private val log = LoggerFactory.getLogger("main")
  */
 @Target(AnnotationTarget.FUNCTION)
 @Retention(AnnotationRetention.RUNTIME)
-@Component
-@Qualifier
 annotation class Handler(
     val method: String,
     val pathTemplate: String,
@@ -40,6 +38,11 @@ class AnotherController : Controller {
     @Handler("GET", "another/path")
     fun getIndex(): String {
         return "Hello"
+    }
+
+    @Handler("POST", pathTemplate="another/path")
+    fun create(): Unit {
+        // something...
     }
 }
 

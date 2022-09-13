@@ -1,29 +1,63 @@
 package isel.pt.daw.e0.first
+
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 private val log = LoggerFactory.getLogger("main")
 
+// Interface with some functionality.
+// This is the dependency
 interface InterfaceA
-class ComponentA : InterfaceA
+interface InterfaceB
 
-data class ComponentB(
+// An implementation of that interface.
+class ComponentA : InterfaceA{
+    init {
+        log.info("ComponentA ctor")
+    }
+}
+
+// A dependent on the dependency
+// Constructor Injection
+class ComponentB(
     val dependency: InterfaceA
-)
+) : InterfaceB {
+    init {
+        log.info("ComponentB ctor")
+    }
+}
+
+class ComponentC(
+    private val dependency: InterfaceB
+){
+    init {
+        log.info("ComponentC ctor")
+    }
+}
 
 fun main() {
     log.info("started")
     // Create the context
     val context = AnnotationConfigApplicationContext()
     // Add the bean definitions
-    context.register(ComponentA::class.java, ComponentB::class.java)
+    context.register(
+        ComponentC::class.java,
+        ComponentA::class.java,
+        ComponentB::class.java,
+    )
     // Refresh the context to take into consideration the new bean definitions
+    log.info("Calling refresh")
     context.refresh()
     // Get a bean
+    log.info("Getting beans")
     val componentB = context.getBean(ComponentB::class.java)
     log.info("ComponentB instance -  {}", componentB)
     val interfaceA = context.getBean(InterfaceA::class.java)
     log.info("InterfaceA instance - {}", interfaceA)
+    log.info("InterfaceA inside ComponentB - {}", componentB.dependency)
+
+    val componentC = context.getBean(ComponentC::class.java)
+    log.info("componentC instance - {}", componentC)
 
     /*
      * Conclusions:
