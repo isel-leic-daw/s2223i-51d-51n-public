@@ -3,6 +3,7 @@ package isel.pt.daw
 import jakarta.servlet.DispatcherType
 import org.eclipse.jetty.server.Server
 import org.eclipse.jetty.server.ServerConnector
+import org.eclipse.jetty.servlet.FilterHolder
 import org.eclipse.jetty.servlet.ServletContextHandler
 import org.eclipse.jetty.servlet.ServletHolder
 import org.slf4j.LoggerFactory
@@ -22,7 +23,7 @@ fun main() {
         handler = ServletContextHandler().apply {
             contextPath = "/"
             addServlet(ServletHolder(ExampleServet()), "/*")
-            addFilter(ExampleFilter::class.java, "/*", EnumSet.of(DispatcherType.REQUEST))
+            addFilter(FilterHolder(ExampleFilter()), "/*", EnumSet.of(DispatcherType.REQUEST))
         }
     }
     server.start()

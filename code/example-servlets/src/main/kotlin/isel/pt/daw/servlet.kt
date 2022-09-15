@@ -16,8 +16,13 @@ import org.slf4j.LoggerFactory
  */
 class ExampleServet : HttpServlet() {
 
-    override fun doGet(request: HttpServletRequest, response: HttpServletResponse) {
-        log.info("doGet: method='{}', uri='{}'", request.method, request.requestURI)
+    override fun doGet(
+        request: HttpServletRequest,
+        response: HttpServletResponse,
+    ) {
+        log.info("doGet: method='{}', uri='{}'",
+            request.method,
+            request.requestURI)
 
         response.status = 200
         // QUESTION what happens if 'charset=utf-8' is removed
@@ -35,7 +40,11 @@ class ExampleServet : HttpServlet() {
 }
 
 class ExampleFilter : HttpFilter() {
-    override fun doFilter(request: HttpServletRequest, response: HttpServletResponse, chain: FilterChain) {
+    override fun doFilter(
+        request: HttpServletRequest,
+        response: HttpServletResponse,
+        chain: FilterChain) {
+
         log.info("doFilter: before chain call")
         chain.doFilter(request, response)
         log.info("doFilter: after chain call")
