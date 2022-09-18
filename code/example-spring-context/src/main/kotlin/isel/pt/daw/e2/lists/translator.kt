@@ -3,6 +3,7 @@ package isel.pt.daw.e2.lists
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.stereotype.Component
+import org.springframework.beans.factory.getBean
 
 private val log = LoggerFactory.getLogger("main")
 
@@ -38,7 +39,7 @@ fun main() {
     // Refresh the context to take into consideration the new bean definitions
     context.refresh()
     // Get a bean
-    val translator = context.getBean(Translator::class.java)
+    val translator = context.getBean<Translator>()
 
     println(translator.translate("Hello", "pt"))
     println(translator.translate("Hello", "es"))

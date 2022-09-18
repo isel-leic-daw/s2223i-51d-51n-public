@@ -2,6 +2,7 @@ package isel.pt.daw.e0.first
 
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.AnnotationConfigApplicationContext
+import org.springframework.beans.factory.getBean
 
 private val log = LoggerFactory.getLogger("main")
 
@@ -28,7 +29,7 @@ class ComponentB(
 }
 
 class ComponentC(
-    private val dependency: InterfaceB
+    val dependency: InterfaceB
 ){
     init {
         log.info("ComponentC ctor")
@@ -50,6 +51,16 @@ fun main() {
     context.refresh()
     // Get a bean
     log.info("Getting beans")
+    val componentC = context.getBean<ComponentC>()
+    log.info("ComponentC instance - {}", componentC)
+    val anotherComponentC = context.getBean<ComponentC>()
+    val componentB = context.getBean<ComponentB>()
+
+    log.info("componentC - {}, anotherComponentC - {}", componentC, anotherComponentC)
+    log.info("componentC.dependency - {}, componentB - {}", componentC.dependency, componentB)
+    //val componentC = context.getBean(ComponentC::class.java)
+
+    /*
     val componentB = context.getBean(ComponentB::class.java)
     log.info("ComponentB instance -  {}", componentB)
     val interfaceA = context.getBean(InterfaceA::class.java)
@@ -58,7 +69,7 @@ fun main() {
 
     val componentC = context.getBean(ComponentC::class.java)
     log.info("componentC instance - {}", componentC)
-
+    */
     /*
      * Conclusions:
      * - The context needs to provide an instance of ComponentB.

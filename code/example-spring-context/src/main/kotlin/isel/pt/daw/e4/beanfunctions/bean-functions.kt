@@ -17,7 +17,7 @@ interface HttpClientService{
     fun get(uri: String): String
 }
 
-class DefaultHttpClient(
+class DefaultHttpClientService(
     private val httpClient: HttpClient
 ): HttpClientService {
     override fun get(uri: String): String = httpClient.send(
@@ -48,7 +48,7 @@ private fun main() {
     // Create the context
     val context = AnnotationConfigApplicationContext()
     context.register(
-        DefaultHttpClient::class.java,
+        DefaultHttpClientService::class.java,
         BeanConfig::class.java,
     )
     context.refresh()

@@ -19,7 +19,7 @@ class ExampleServet : HttpServlet() {
     override fun doGet(
         request: HttpServletRequest,
         response: HttpServletResponse,
-    ) {
+    ) : Unit {
         log.info("doGet: method='{}', uri='{}'",
             request.method,
             request.requestURI)
@@ -44,10 +44,12 @@ class ExampleFilter : HttpFilter() {
         request: HttpServletRequest,
         response: HttpServletResponse,
         chain: FilterChain) {
-
+        val start = System.nanoTime()
         log.info("doFilter: before chain call")
         chain.doFilter(request, response)
         log.info("doFilter: after chain call")
+        val end = System.nanoTime()
+        val delta = end - start
     }
 
     companion object {

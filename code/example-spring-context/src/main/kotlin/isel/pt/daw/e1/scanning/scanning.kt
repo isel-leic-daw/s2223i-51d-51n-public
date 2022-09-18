@@ -3,6 +3,7 @@ package isel.pt.daw.e1.scanning
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.stereotype.Component
+import org.springframework.beans.factory.getBean
 
 private val log = LoggerFactory.getLogger("main")
 
@@ -25,11 +26,8 @@ fun main() {
     // Refresh the context to take into consideration the new bean definitions
     context.refresh()
     // Get a bean
-    val componentB = context.getBean(ComponentB::class.java)
-    log.info("ComponentB instance -  {}", componentB)
-    val interfaceA = context.getBean(InterfaceA::class.java)
-    log.info("InterfaceA instance - {}", interfaceA)
-
+    val componentB = context.getBean<ComponentB>()
+    log.info("componentB - {}", componentB)
     /*
      * Conclusions:
      * - In this example the bean definitions are not added explicitly to the context.
