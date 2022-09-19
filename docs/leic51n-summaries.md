@@ -72,3 +72,36 @@
             - Typically defined as an instance function (i.e. method) **without** a predefined type signature.
             - With additional metadata provided as annotations, to associate it to HTTP request methods and URI path templates.
         - _controller_ - a container of handlers.
+
+## Lesson 3 - 2022-09-19
+
+- Spring MVC (Model-View-Controller)
+    - [Documentation](https://docs.spring.io/spring-framework/docs/current/reference/html/web.html#spring-web)
+    - Servlet-based architecture
+        - Single [`DispatcherServlet`](https://docs.spring.io/spring-framework/docs/current/reference/html/web.html#mvc-servlet) mapped to all paths.
+        - Servlet container initialization and servlet mapping is done by Spring Boot.
+        - This pattern is sometimes named [_front controller_](https://www.martinfowler.com/eaaCatalog/frontController.html).
+        - `HttpServletRequest` and `HttpServletResponse` are the base for all request and response interaction.
+        - It is possible to use filters (defined according to the servlet interface).
+    - Argument resolution (see `ArgumentResolutionExamplesController`).
+        - From path template variables.
+        - From request parameters (i.e. query string parameters).
+        - From the request body using model binding.
+        - From the servlet request and response objects.
+        - Using custom argument resolvers.
+            - See `ClientIpExampleArgumentResolver`.
+
+ ## Lesson 3 - 2022-09-22
+ 
+- Spring MVC (cont.)
+    - Response message production (see `MessageConversionExamplesController`)
+        - From primitive types.
+        - Using `ResponseEntity` to control other parts of the message, such as the status code and the headers.
+        - From complex types, using messsage converts
+            - Jackson-based message converter.
+            - Creating custom message converters (see `UriToQrCodeMessageConverter`).
+    - Configuration via the `WebMvcConfigurer` interface.
+    - Intercepting requests via filters and handler interceptors.
+        - Differences on the programming models and capabilities.
+        - The `HttpServletRequest` attributes bag.
+
