@@ -1,6 +1,7 @@
 package com.example.demo.controllers
 
 import com.example.demo.ClientIp
+import org.hibernate.validator.constraints.Length
 import org.springframework.util.MultiValueMap
 import org.springframework.web.bind.annotation.*
 import javax.servlet.http.HttpServletRequest
@@ -13,7 +14,8 @@ import javax.validation.constraints.Size
  */
 
 data class StudentInputModel(
-    @get:Size(min=1, max=256)
+
+    @get:Length(min=1, max=255)
     val name: String,
 
     @get:Min(1)

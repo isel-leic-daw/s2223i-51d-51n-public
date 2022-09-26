@@ -6,12 +6,15 @@ import org.springframework.http.HttpInputMessage
 import org.springframework.http.HttpOutputMessage
 import org.springframework.http.MediaType
 import org.springframework.http.converter.AbstractGenericHttpMessageConverter
+import org.springframework.stereotype.Component
 import java.lang.reflect.Type
 import java.net.URI
 
-
+@Component
 class UriToQrCodeMessageConverter
-    : AbstractGenericHttpMessageConverter<URI>(MediaType("image", "png")) {
+    : AbstractGenericHttpMessageConverter<URI>(
+    MediaType("image", "png")
+) {
 
     /**
      * This converter only knows how to write and not how to read

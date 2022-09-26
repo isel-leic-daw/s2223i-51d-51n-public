@@ -33,6 +33,7 @@ class MessageConversionExamplesController {
     fun handler2() = ResponseEntity
         .status(201)
         .contentType(MediaType.parseMediaType("application/vnd.isel.student+json"))
+        .header("foo", "bar")
         .body(StudentOutputModel("Alice", 12345))
 
     // using custom message converters

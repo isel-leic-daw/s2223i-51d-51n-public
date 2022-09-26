@@ -91,7 +91,7 @@
         - Using custom argument resolvers.
             - See `ClientIpExampleArgumentResolver`.
 
- ## Lesson 3 - 2022-09-22
+## Lesson 3 - 2022-09-22
  
 - Spring MVC (cont.)
     - Response message production (see `MessageConversionExamplesController`)
@@ -104,4 +104,22 @@
     - Intercepting requests via filters and handler interceptors.
         - Differences on the programming models and capabilities.
         - The `HttpServletRequest` attributes bag.
+
+- Introduction to HTTP API design
+    - Characterization of APIs
+        - On one end
+            - Single client.
+            - High coordination between client and HTTP API.
+                - Easy to add and coordinate changes on both the client and the API.
+            - Short-lived: months.
+            - Data-oriented.
+                - Provides data for clients to use on their own ways
+        - On the other end (not really the end)
+            - Multiple clients.
+            - Dificult to coordinate changes on both the clients and the APIs
+            - Long-lived: years, decades.
+            - Journey-oriented (process-oriented).
+                - Exposes functionality for clients to provide very well defined journeys/processes
+    - Introduction to the use of hypermedia as a way to reduce coupling between the client and a specific HTTP API implementation.
+        - Analysis of a concrete HTTP API.
 

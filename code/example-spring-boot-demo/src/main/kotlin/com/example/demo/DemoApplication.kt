@@ -17,6 +17,7 @@ import org.springframework.web.servlet.function.RouterFunction
 class DemoApplication(
     private val exampleHandlerInterceptor: ExampleHandlerInterceptor,
     private val clientIpArgumentResolver: ClientIpExampleArgumentResolver,
+    private val uriToQrCodeMessageConverter: UriToQrCodeMessageConverter,
 ) : WebMvcConfigurer {
 
     @Bean
@@ -32,7 +33,7 @@ class DemoApplication(
     }
 
     override fun configureMessageConverters(converters: MutableList<HttpMessageConverter<*>>) {
-        converters.add(0, UriToQrCodeMessageConverter())
+        converters.add(0, uriToQrCodeMessageConverter)
         converters.add(0, CustomOutputModelMessageConverter())
     }
 
