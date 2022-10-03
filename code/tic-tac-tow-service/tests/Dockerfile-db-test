@@ -1,0 +1,9 @@
+FROM postgres
+
+USER postgres
+WORKDIR /app
+
+COPY sql/create-schema.sql /docker-entrypoint-initdb.d/1_create.sql
+COPY sql/insert-test-data.sql /docker-entrypoint-initdb.d/2_insert-test-data.sql
+
+EXPOSE 5432
