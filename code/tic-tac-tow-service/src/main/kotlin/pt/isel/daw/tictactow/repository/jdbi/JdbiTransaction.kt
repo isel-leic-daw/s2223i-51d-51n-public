@@ -17,5 +17,3 @@ class JdbiTransaction(
         handle.rollback()
     }
 }
-
-

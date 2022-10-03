@@ -1,15 +1,15 @@
 package pt.isel.daw.tictactow.repository
 
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.fail
 import org.junit.jupiter.api.Test
 import pt.isel.daw.tictactow.RealClock
+import pt.isel.daw.tictactow.domain.GameLogic
 import pt.isel.daw.tictactow.domain.PasswordValidationInfo
 import pt.isel.daw.tictactow.repository.jdbi.JdbiGamesRepository
 import pt.isel.daw.tictactow.repository.jdbi.JdbiUsersRepository
-import pt.isel.daw.tictactow.domain.GameLogic
 import pt.isel.daw.tictactow.utils.testWithHandleAndRollback
 import java.time.Duration
-import kotlin.test.assertEquals
-import kotlin.test.fail
 
 class GameRepositoryTests {
 

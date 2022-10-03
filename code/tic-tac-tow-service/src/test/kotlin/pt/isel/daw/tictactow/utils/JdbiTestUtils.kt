@@ -19,7 +19,8 @@ fun testWithHandleAndRollback(block: (Handle) -> Unit) = jdbi.useTransaction<Exc
     handle.rollback()
 }
 
-fun testWithTransactionManagerAndRollback(block: (TransactionManager) -> Unit) = jdbi.useTransaction<Exception> { handle ->
+fun testWithTransactionManagerAndRollback(block: (TransactionManager) -> Unit) = jdbi.useTransaction<Exception>
+{ handle ->
 
     val transaction = JdbiTransaction(handle)
 

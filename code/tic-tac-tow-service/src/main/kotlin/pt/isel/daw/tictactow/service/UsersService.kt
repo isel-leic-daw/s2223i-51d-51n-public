@@ -27,7 +27,6 @@ class UsersService(
 ) {
 
     fun createUser(username: String, password: String): UserCreationResult {
-
         if (!userLogic.isSafePassword(password)) {
             return Either.Left(UserCreationError.InsecurePassword)
         }
@@ -64,7 +63,7 @@ class UsersService(
     }
 
     fun getUserByToken(token: String): User? {
-        if(!userLogic.canBeToken(token)) {
+        if (!userLogic.canBeToken(token)) {
             return null
         }
         return transactionManager.run {

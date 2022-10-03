@@ -1,6 +1,7 @@
 package pt.isel.daw.tictactow.domain
 
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.fail
 import org.junit.jupiter.api.Test
 import pt.isel.daw.tictactow.Clock
 import pt.isel.daw.tictactow.RealClock
@@ -67,7 +68,6 @@ class GameLogicTests {
 
     @Test
     fun `cannot play twice`() {
-
         // given: a game
         var game = gameLogic.createNewGame(alice, bob)
 
@@ -104,27 +104,26 @@ class GameLogicTests {
 
     @Test
     fun `alice wins`() {
-
         // given: a game and a list of rounds
         val game = gameLogic.createNewGame(alice, bob)
         val rounds = listOf(
-            Round(Position(1,1), alice),
-            Round(Position(0,1), bob),
+            Round(Position(1, 1), alice),
+            Round(Position(0, 1), bob),
 
-            Round(Position(0,0), alice),
-            Round(Position(2,2), bob),
+            Round(Position(0, 0), alice),
+            Round(Position(2, 2), bob),
 
-            Round(Position(2,0), alice),
-            Round(Position(0,2), bob),
+            Round(Position(2, 0), alice),
+            Round(Position(0, 2), bob),
 
-            Round(Position(1,0), alice),
+            Round(Position(1, 0), alice),
         )
 
         // when: the rounds are applied
         val result = play(gameLogic, game, rounds)
 
         // then: alice wins
-        when(result){
+        when (result) {
             is RoundResult.YouWon -> {
                 assertEquals(Game.State.PLAYER_X_WON, result.game.state)
             }
@@ -134,30 +133,29 @@ class GameLogicTests {
 
     @Test
     fun `test draw game`() {
-
         // given: a game and a list of rounds
         val game = gameLogic.createNewGame(alice, bob)
         val rounds = listOf(
-            Round(Position(0,0), alice),
-            Round(Position(1,1), bob),
+            Round(Position(0, 0), alice),
+            Round(Position(1, 1), bob),
 
-            Round(Position(2,0), alice),
-            Round(Position(1,0), bob),
+            Round(Position(2, 0), alice),
+            Round(Position(1, 0), bob),
 
-            Round(Position(1,2), alice),
-            Round(Position(0,1), bob),
+            Round(Position(1, 2), alice),
+            Round(Position(0, 1), bob),
 
-            Round(Position(2,1), alice),
-            Round(Position(2,2), bob),
+            Round(Position(2, 1), alice),
+            Round(Position(2, 2), bob),
 
-            Round(Position(0,2), alice),
+            Round(Position(0, 2), alice),
         )
 
         // when: the rounds are applied
         val result = play(gameLogic, game, rounds)
 
         // then: it's a draw
-        when(result){
+        when (result) {
             is RoundResult.Draw -> {
                 assertEquals(Game.State.DRAW, result.game.state)
             }
@@ -167,7 +165,6 @@ class GameLogicTests {
 
     @Test
     fun `timeout test`() {
-
         // given: a game logic, a game and a list of rounds
         val testClock = TestClock()
         val timeout = Duration.ofMinutes(5)
@@ -176,20 +173,20 @@ class GameLogicTests {
 
         // when: alice plays
         testClock.advance(timeout.minusMinutes(1))
-        var result = gameLogic.applyRound(game, Round(Position(1,1), alice))
+        var result = gameLogic.applyRound(game, Round(Position(1, 1), alice))
 
         // then: round is accepted
-        game = when(result) {
+        game = when (result) {
             is RoundResult.OthersTurn -> result.game
             else -> fail("Unexpected result $result")
         }
 
         // when: bob plays
         testClock.advance(timeout.plusSeconds(1))
-        result = gameLogic.applyRound(game, Round(Position(1,1), bob))
+        result = gameLogic.applyRound(game, Round(Position(1, 1), bob))
 
         // then: round is not accepted and alice won
-        game = when(result) {
+        game = when (result) {
             is RoundResult.TooLate -> result.game
             else -> fail("Unexpected result $result")
         }
@@ -217,7 +214,7 @@ class GameLogicTests {
 
         // our test players
         private val alice = User(1, "alice", PasswordValidationInfo(""))
-        private val bob =  User(2, "alice", PasswordValidationInfo(""))
+        private val bob = User(2, "alice", PasswordValidationInfo(""))
     }
 
     class TestClock : Clock {
@@ -230,5 +227,4 @@ class GameLogicTests {
             now += duration
         }
     }
-
 }

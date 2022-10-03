@@ -5,6 +5,7 @@ plugins {
 	id("io.spring.dependency-management") version "1.0.14.RELEASE"
 	kotlin("jvm") version "1.6.21"
 	kotlin("plugin.spring") version "1.6.21"
+	java
 }
 
 group = "pt.isel.daw"
@@ -14,6 +15,8 @@ java.sourceCompatibility = JavaVersion.VERSION_17
 repositories {
 	mavenCentral()
 }
+
+val ktlint by configurations.creating
 
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-validation")
@@ -31,6 +34,8 @@ dependencies {
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation(kotlin("test"))
+
+	ktlint("com.pinterest:ktlint:0.47.1")
 }
 
 tasks.withType<KotlinCompile> {
@@ -42,4 +47,23 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+}
+
+// from https://pinterest.github.io/ktlint/install/integrations/#custom-gradle-integration-with-kotlin-dsl
+val outputDir = "${project.buildDir}/reports/ktlint/"
+val inputFiles = project.fileTree(mapOf("dir" to "src", "include" to "**/*.kt"))
+
+val ktlintCheck by tasks.creating(JavaExec::class) {
+	inputs.files(inputFiles)
+	outputs.dir(outputDir)
+
+	description = "Check Kotlin code style."
+	classpath = ktlint
+	mainClass.set("com.pinterest.ktlint.Main")
+	// see https://pinterest.github.io/ktlint/install/cli/#command-line-usage for more information
+	args = listOf("src/**/*.kt")
+}
+
+tasks.named("check") {
+	dependsOn(ktlintCheck)
 }

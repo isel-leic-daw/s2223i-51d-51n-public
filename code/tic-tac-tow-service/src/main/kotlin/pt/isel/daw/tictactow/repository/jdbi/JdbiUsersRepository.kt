@@ -18,7 +18,11 @@ class JdbiUsersRepository(
             .singleOrNull()
 
     override fun storeUser(username: String, passwordValidation: PasswordValidationInfo): Boolean =
-        handle.createUpdate("insert into dbo.Users (username, password_validation) values (:username, :password_validation)")
+        handle.createUpdate(
+            """
+            insert into dbo.Users (username, password_validation) values (:username, :password_validation)
+            """
+        )
             .bind("username", username)
             .bind("password_validation", passwordValidation.validationInfo)
             .execute() == 1
@@ -37,15 +41,16 @@ class JdbiUsersRepository(
     }
 
     override fun getUserByTokenValidationInfo(tokenValidationInfo: TokenValidationInfo): User? =
-        handle.createQuery("""
+        handle.createQuery(
+            """
             select id, username, password_validation 
             from dbo.Users as users 
             inner join dbo.Tokens as tokens 
             on users.id = tokens.user_id
             where token_validation = :validation_information
-            """)
+            """
+        )
             .bind("validation_information", tokenValidationInfo.validationInfo)
             .mapTo<User>()
             .singleOrNull()
-
 }

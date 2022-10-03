@@ -3,7 +3,7 @@ package pt.isel.daw.tictactow.domain
 import java.security.SecureRandom
 import java.util.*
 
-class UserLogic{
+class UserLogic {
 
     fun generateToken(): String =
         ByteArray(TOKEN_BYTE_SIZE).let { byteArray ->

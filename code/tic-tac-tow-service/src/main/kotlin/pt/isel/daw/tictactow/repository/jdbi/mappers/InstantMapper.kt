@@ -7,7 +7,6 @@ import java.time.Instant
 
 class InstantMapper : ColumnMapper<Instant> {
     override fun map(rs: ResultSet, columnNumber: Int, ctx: StatementContext): Instant {
-       return Instant.ofEpochSecond(rs.getLong(columnNumber))
+        return Instant.ofEpochSecond(rs.getLong(columnNumber))
     }
-
 }

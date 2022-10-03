@@ -1,5 +1,6 @@
 package com.example.demo.pipeline.filters
 
+import com.example.demo.RequestScopedComponent
 import com.example.demo.pipeline.handlerinterceptors.ExampleHandlerInterceptor
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
@@ -14,7 +15,9 @@ import javax.servlet.http.HttpServletResponse
 import javax.servlet.http.HttpServletResponseWrapper
 
 @Component
-class ResponseHeaderFilter : HttpFilter() {
+class ResponseHeaderFilter(
+    val requestScopedComponent: RequestScopedComponent
+) : HttpFilter() {
 
     companion object {
         private val logger = LoggerFactory.getLogger(ResponseHeaderFilter::class.java)
@@ -27,6 +30,7 @@ class ResponseHeaderFilter : HttpFilter() {
     ) {
         val start = System.nanoTime()
         val wrappedResponse = ResponseWrapper(response)
+        requestScopedComponent.path = request.requestURI
         try {
             chain.doFilter(request, wrappedResponse)
         } finally {

@@ -80,8 +80,5 @@ class GameDbModel(
     @Nested("playerO")
     val playerO: User,
 ) {
-    fun toGame() = Game(
-        id, state, board, created, updated, deadline,
-        playerX, playerO
-    )
+    fun toGame() = Game(id, state, board, created, updated, deadline, playerX, playerO)
 }

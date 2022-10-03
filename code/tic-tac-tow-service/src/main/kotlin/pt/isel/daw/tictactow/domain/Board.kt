@@ -5,8 +5,7 @@ data class Board(
 ) {
     init {
         require(
-            cells.size == 3 &&
-                    cells.all { it.size == 3 }
+            cells.size == 3 && cells.all { it.size == 3 }
         )
     }
 
@@ -21,17 +20,19 @@ data class Board(
     fun hasWon(state: State): Boolean {
         require(state != State.EMPTY)
         // TODO can be optimized
-        return cells.any { row -> row.all { it == state } }
-                || (0..2).any { col -> cells.all { row -> row[col] == state } }
-                || cells[0][0] == state && cells[1][1] == state && cells[2][2] == state
-                || cells[0][2] == state && cells[1][1] == state && cells[2][0] == state
+        return cells.any { row -> row.all { it == state } } ||
+            (0..2).any { col -> cells.all { row -> row[col] == state } } ||
+            cells[0][0] == state && cells[1][1] == state && cells[2][2] == state ||
+            cells[0][2] == state && cells[1][1] == state && cells[2][0] == state
     }
 
     companion object {
 
-        fun create() = Board(Array(3) {
-            Array(3) { State.EMPTY }
-        })
+        fun create() = Board(
+            Array(3) {
+                Array(3) { State.EMPTY }
+            }
+        )
 
         fun fromString(s: String): Board {
             require(s.length == 9)
@@ -88,10 +89,9 @@ data class Board(
         return true
     }
 
-    fun isFull(): Boolean = cells.all { row -> row.all {it != State.EMPTY} }
+    fun isFull(): Boolean = cells.all { row -> row.all { it != State.EMPTY } }
 
     override fun hashCode(): Int {
         return cells.contentDeepHashCode()
     }
-
 }
