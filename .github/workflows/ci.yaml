@@ -13,4 +13,4 @@ jobs:
         with:
           java-version: 17
       - name: Build with Gradle
-        run: code/tic-tac-tow-service/gradlew -p code/tic-tac-tow-service ktlint
+        run: code/tic-tac-tow-service/gradlew -p code/tic-tac-tow-service check
