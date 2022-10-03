@@ -49,6 +49,19 @@ tasks.withType<Test> {
 	useJUnitPlatform()
 }
 
+task<Exec>("dbTestsUp") {
+    commandLine("docker-compose", "up", "-d", "--build", "--force-recreate", "db-tests")
+}
+
+task<Exec>("dbTestsWait") {
+    commandLine("docker", "exec", "db-tests", "/app/bin/wait-for-postgres.sh", "localhost")
+    dependsOn("dbTestsUp")
+}
+
+task<Exec>("dbTestsDown") {
+    commandLine("docker-compose", "down")
+}
+
 // from https://pinterest.github.io/ktlint/install/integrations/#custom-gradle-integration-with-kotlin-dsl
 val outputDir = "${project.buildDir}/reports/ktlint/"
 val inputFiles = project.fileTree(mapOf("dir" to "src", "include" to "**/*.kt"))
@@ -66,4 +79,6 @@ val ktlintCheck by tasks.creating(JavaExec::class) {
 
 tasks.named("check") {
 	dependsOn(ktlintCheck)
+    dependsOn("dbTestsWait")
+    finalizedBy("dbTestsDown")
 }
