@@ -91,7 +91,7 @@
         - Using custom argument resolvers.
             - See `ClientIpExampleArgumentResolver`.
 
-## Lesson 3 - 2022-09-22
+## Lesson 4 - 2022-09-22
  
 - Spring MVC (cont.)
     - Response message production (see `MessageConversionExamplesController`)
@@ -123,3 +123,118 @@
     - Introduction to the use of hypermedia as a way to reduce coupling between the client and a specific HTTP API implementation.
         - Analysis of a concrete HTTP API.
 
+## Lesson 5 - 2022-09-26
+
+- System architecture for the DAW project
+    - Backend service component and frontend client component.
+    - Responsabilities of each component.
+        - Backend service is responsible to ensure data integrity, namely that all domain rules are correctly enforced.
+            - Data integrity and domain rule enforcement does not depend on the correct behaviour of the frontend application.
+                - However correctness of the frontend application is required to ensure all operations correctly reflect user behavior.
+        - Frontend client component is resposible for the user interaction.
+    - Interaction between frontend applications and backend service done via an HTTP API, provided by the backend service.
+        - HTTP API follows a request-response messaging pattern, at least during the first phase
+            - The communication initiative is always on the API's client, i.e., the frontend application.
+            - The backend service only communicates information to the frontend service in the context of an HTTP response.
+            - Implies polling by the frontend application to check for asynchronous state changes.
+
+- Backend service architecture
+    - A Postgres DBMS, holding all the relevant system state, such as users, games, and boards. 
+    - One or more servers, running a JVM-based application, hosting the HTTP request handling logic, domain logic, and interaction with the DBMS.
+    - A load-balancer, exposing the publicly accessible network endpoint with the HTTP API, and forwarding the requests to one of the servers.
+    - A consequence of this load-balancing based architecture is that the servers need to be mostly stateless.
+        - Do not hold system state, such as users and games.
+        - Only hold configuration and inter-request processing state.
+
+## Lesson 6 - 2022-09-29
+
+- Server architecture
+    - Use of the Spring framework.
+    - HTTP processing pipeline with intermediaries containing common processing.
+        E.g. authentication token handling, handler argument resolving.
+    - Handlers, defined in controllers, resposible for the specific HTTP request handling.
+    - Services, used by handlers with the domain logic.
+        - Services are independent of the interface being an HTTP API (i.e. they don't know anything about HTTP).
+        - Services are independent of the persistence interface (i.e. they don't know anything about relational databases or JDBC).
+    - Repositories, responsible for data persistence and retrieval.
+
+- Designing the interactions between handlers, services, and repositories.
+    - Defining the transaction boundaries and associated design options.
+    - Using Thread Local Storage as a way to associate transaction information to each request without the need to explicitly passing it via arguments through all the layers.
+
+- The Spring context request scope has a way to associate managed beans to HTTP requests.
+
+## Lesson 7 - 2022-10-03
+
+- Web architecture review [https://www.w3.org/TR/webarch/](https://www.w3.org/TR/webarch/)
+    - Web as an information space where the items of interest are _resources_.
+    - Resource identification via _Uniform Resource Identifiers_ (URI).
+        - _Universility_ property of URIs
+    - Interaction between agents and resources via _interaction protocols_, such as HTTP.
+    - Use of formats to represent state, namely resource state.
+        - Media-types as identifiers for formats.
+        - Use of links in representations as a way to relate resources in the information space.
+
+- The HTTP protocol.
+    - Request and response messages.
+    - Message semantics vs. network communication mechanisms.
+        - Message semantics is almost unchaged since HTTP/1.1.
+        - Network communication mechanisms have changed between HTTP/1.1 and HTTP/3.
+            - The evolution has been on a better usage of the network and not on a change to the messaging semantics.
+                - Multiple simultaneous request and responses on the same connection.
+                - Binary encodings of messages.
+    - General method semantics.
+        - Safe methods and idempotent methods.
+    - Specific method semantics.
+        - `GET` semantics.
+        - `PUT` semantics.
+        - `POST` semantics.
+        - How to use RFCs to obtain further information.
+        - Additional reading: ["Should I PUT or should I POST"](https://labs.pedrofelix.org/notes/http/should-i-put-or-should-i-post)
+    - Request headers, response headers and content headers.
+        - Way to provide extra information about the request, the response, or the message content (i.e. payload).
+        - Headers typically contain domain-independent information (e.g. GitHub's rate limit headers).
+
+## Lesson 8 - 2022-10-10 (planned)
+
+- The HTTP protocol.
+    - Response message status codes.
+    - How to inform about failure
+        - Status codes. 
+        - Representations
+            - ["RFC 7807 - Problem Details for HTTP APIs"](https://www.rfc-editor.org/rfc/rfc7807)
+                - Standard members of a _Problem Details_ JSON object.
+                - Extension members and their relation to the standard `type` field.
+        - Additional reading: 
+            - Additional reading: 
+                - ["How to fail in HTTP APIs"](https://labs.pedrofelix.org/notes/http/how-to-fail)
+                - ["How to think about HTTP Status Codes"](https://www.mnot.net/blog/2017/05/11/status_codes)
+                - ["Indicating problems in HTTP APIs](https://www.mnot.net/blog/2013/05/15/http_problem)
+
+- Representation design.
+
+    - [JSON Hypertext Application Language](https://datatracker.ietf.org/doc/html/draft-kelly-json-hal) - draft
+        - Links represented in the special `_links` field.
+            - `_links` is an object where the field names are relation types and the values is a link object or an array of link objects.
+            - A link object has: `href`, `templated`, `type`, ...
+        - _Embedded resources_ represented in the special `_embedded` field.
+        - No support for representing actions, i.e., non-safe interactions.
+
+    - [HAL-FORMS](https://datatracker.ietf.org/doc/html/draft-kelly-json-hal) - draft
+        - Main idea:
+            - HAL representation contains links to resources that represent non-safe interactions.
+                - Obtaining such a resource is a safe-interaction, performed via a `GET` request.
+            - HAL-FORM representation contains information on how to perform a non-safe interaction.
+                - Very similar in objective to HTML forms.
+    
+    - [Siren: a hypermedia specification for representing entities](https://github.com/kevinswiber/siren)
+        - Main ideas:
+            - Including the actions representations in resource representations (on HAL-FORMS, these actions are their own resources).
+            - Grouping the non-link resource properties in a `properties` field.
+            - The concept of `class`.
+    
+    - [JSON:API](https://jsonapi.org/)
+
+## Lesson 9 - 2022-10-13 (planned)
+
+- Continuation of the previous lesson.
