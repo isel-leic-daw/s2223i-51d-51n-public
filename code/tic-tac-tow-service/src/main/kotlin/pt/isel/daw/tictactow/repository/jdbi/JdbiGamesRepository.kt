@@ -1,8 +1,12 @@
 package pt.isel.daw.tictactow.repository.jdbi
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.KotlinModule
 import org.jdbi.v3.core.Handle
 import org.jdbi.v3.core.kotlin.mapTo
 import org.jdbi.v3.core.mapper.Nested
+import org.jdbi.v3.core.statement.Update
+import org.postgresql.util.PGobject
 import pt.isel.daw.tictactow.domain.Board
 import pt.isel.daw.tictactow.domain.Game
 import pt.isel.daw.tictactow.domain.User
@@ -23,7 +27,7 @@ class JdbiGamesRepository(
         )
             .bind("id", game.id)
             .bind("state", game.state)
-            .bind("board", game.board.toString())
+            .bindBoard("board", game.board)
             .bind("created", game.created.epochSecond)
             .bind("updated", game.updated.epochSecond)
             .bind("deadline", game.deadline?.epochSecond)
@@ -61,10 +65,30 @@ class JdbiGamesRepository(
         )
             .bind("id", game.id)
             .bind("state", game.state)
-            .bind("board", game.board.toString())
+            .bindBoard("board", game.board)
             .bind("updated", game.updated.epochSecond)
             .bind("deadline", game.deadline?.epochSecond)
             .execute()
+    }
+
+    companion object {
+        private fun Update.bindBoard(name: String, board: Board) = run {
+            bind(
+                name,
+                PGobject().apply {
+                    type = "jsonb"
+                    value = serializeBoardToJson(board)
+                }
+            )
+        }
+
+        private val objectMapper = ObjectMapper().registerModule(KotlinModule.Builder().build())
+
+        private fun serializeBoardToJson(board: Board): String = objectMapper.writeValueAsString(board.cells)
+
+        fun deserializeBoardFromJson(json: String) = Board(
+            objectMapper.readValue(json, Array<Array<Board.State>>::class.java)
+        )
     }
 }
 

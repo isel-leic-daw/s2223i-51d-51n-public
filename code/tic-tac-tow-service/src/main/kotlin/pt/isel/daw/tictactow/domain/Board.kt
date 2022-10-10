@@ -1,7 +1,7 @@
 package pt.isel.daw.tictactow.domain
 
 data class Board(
-    private val cells: Array<Array<State>>
+    val cells: Array<Array<State>>
 ) {
     init {
         require(

@@ -14,7 +14,7 @@ create table dbo.Tokens(
 create table dbo.Games(
     id UUID not null,
     state VARCHAR(64) not null,
-    board CHAR(9) not null,
+    board jsonb not null,
     created int not null,
     updated int not null,
     deadline int,
