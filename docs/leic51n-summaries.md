@@ -220,7 +220,7 @@
         - _Embedded resources_ represented in the special `_embedded` field.
         - No support for representing actions, i.e., non-safe interactions.
 
-    - [HAL-FORMS](https://datatracker.ietf.org/doc/html/draft-kelly-json-hal) - draft
+    - [HAL-FORMS](https://rwcbook.github.io/hal-forms/) - draft
         - Main idea:
             - HAL representation contains links to resources that represent non-safe interactions.
                 - Obtaining such a resource is a safe-interaction, performed via a `GET` request.
