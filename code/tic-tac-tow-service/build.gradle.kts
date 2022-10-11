@@ -12,6 +12,9 @@ group = "pt.isel.daw"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
+val isArm = System.getProperty("os.arch") == "aarch64"
+val isMac = System.getProperty("os.name").toLowerCase().contains("mac")
+
 repositories {
 	mavenCentral()
 }
@@ -34,6 +37,12 @@ dependencies {
 	implementation("org.postgresql:postgresql:42.5.0")
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.springframework.boot:spring-boot-starter-webflux")
+
+    // TODO may need to consider other environments as well
+    if(isMac && isArm) {
+        runtimeOnly("io.netty:netty-resolver-dns-native-macos:4.1.82.Final:osx-aarch_64")
+    }
 	testImplementation(kotlin("test"))
 
 	ktlint("com.pinterest:ktlint:0.47.1")
