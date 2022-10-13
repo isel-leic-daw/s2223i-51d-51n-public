@@ -10,6 +10,8 @@ import pt.isel.daw.tictactow.utils.testWithTransactionManagerAndRollback
 import java.util.*
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
+import kotlin.test.assertTrue
+import kotlin.test.fail
 
 class UserServiceTests {
 
@@ -29,7 +31,10 @@ class UserServiceTests {
             val createUserResult = userService.createUser("bob", "changeit")
 
             // then: the creation is successful
-            assertEquals(Either.Right(Unit), createUserResult)
+            when (createUserResult) {
+                is Either.Left -> fail("Unexpected $createUserResult")
+                is Either.Right -> assertTrue(createUserResult.value.length > 0)
+            }
 
             // when: creating a token
             val createTokenResult = userService.createToken("bob", "changeit")

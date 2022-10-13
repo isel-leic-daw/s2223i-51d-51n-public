@@ -9,7 +9,7 @@ interface UsersRepository {
     fun storeUser(
         username: String,
         passwordValidation: PasswordValidationInfo,
-    ): Boolean
+    ): String
 
     fun getUserByUsername(username: String): User?
 

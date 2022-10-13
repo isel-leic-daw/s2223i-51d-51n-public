@@ -1,8 +1,10 @@
 package pt.isel.daw.tictactow.domain
 
+import org.springframework.stereotype.Component
 import java.security.SecureRandom
 import java.util.*
 
+@Component
 class UserLogic {
 
     fun generateToken(): String =
