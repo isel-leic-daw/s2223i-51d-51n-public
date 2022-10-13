@@ -1,6 +1,7 @@
 package pt.isel.daw.tictactow.service
 
 import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.stereotype.Component
 import pt.isel.daw.tictactow.Either
 import pt.isel.daw.tictactow.domain.PasswordValidationInfo
 import pt.isel.daw.tictactow.domain.User
@@ -12,13 +13,14 @@ sealed class UserCreationError {
     object UserAlreadyExists : UserCreationError()
     object InsecurePassword : UserCreationError()
 }
-typealias UserCreationResult = Either<UserCreationError, Unit>
+typealias UserCreationResult = Either<UserCreationError, String>
 
 sealed class TokenCreationError {
     object UserOrPasswordAreInvalid : TokenCreationError()
 }
 typealias TokenCreationResult = Either<TokenCreationError, String>
 
+@Component
 class UsersService(
     private val transactionManager: TransactionManager,
     private val userLogic: UserLogic,
@@ -40,8 +42,8 @@ class UsersService(
             if (usersRepository.isUserStoredByUsername(username)) {
                 Either.Left(UserCreationError.UserAlreadyExists)
             } else {
-                usersRepository.storeUser(username, passwordValidationInfo)
-                Either.Right(Unit)
+                val id = usersRepository.storeUser(username, passwordValidationInfo)
+                Either.Right(id)
             }
         }
     }
