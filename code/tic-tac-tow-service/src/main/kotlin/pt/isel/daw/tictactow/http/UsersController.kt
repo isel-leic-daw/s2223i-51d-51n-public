@@ -22,14 +22,14 @@ class UsersController(
     private val userService: UsersService
 ) {
 
-    @PostMapping(Uris.USERS_CREATE)
+    @PostMapping(Uris.Users.CREATE)
     fun create(@RequestBody input: UserCreateInputModel): ResponseEntity<*> {
         val res = userService.createUser(input.username, input.password)
         return when (res) {
             is Either.Right -> ResponseEntity.status(201)
                 .header(
                     "Location",
-                    Uris.userById(res.value).toASCIIString()
+                    Uris.Users.byId(res.value).toASCIIString()
                 ).build<Unit>()
             is Either.Left -> when (res.value) {
                 UserCreationError.InsecurePassword -> Problem.response(400, Problem.insecurePassword)
@@ -38,7 +38,7 @@ class UsersController(
         }
     }
 
-    @PostMapping(Uris.USERS_TOKEN)
+    @PostMapping(Uris.Users.TOKEN)
     fun token(@RequestBody input: UserCreateTokenInputModel): ResponseEntity<*> {
         val res = userService.createToken(input.username, input.password)
         return when (res) {
@@ -50,12 +50,12 @@ class UsersController(
         }
     }
 
-    @GetMapping(Uris.USERS_GET_BY_ID)
+    @GetMapping(Uris.Users.GET_BY_ID)
     fun getById(@PathVariable id: String) {
         TODO("TODO")
     }
 
-    @GetMapping(Uris.USER_HOME)
+    @GetMapping(Uris.Users.HOME)
     fun getUserHome(user: User): UserHomeOutputModel {
         return UserHomeOutputModel(
             id = user.id.toString(),
