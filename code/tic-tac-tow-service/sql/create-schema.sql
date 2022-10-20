@@ -8,7 +8,9 @@ create table dbo.Users(
 
 create table dbo.Tokens(
     token_validation VARCHAR(256) primary key,
-    user_id int references dbo.Users(id)
+    user_id int references dbo.Users(id),
+    created_at bigint not null,
+    last_used_at bigint not null
 );
 
 create table dbo.Games(

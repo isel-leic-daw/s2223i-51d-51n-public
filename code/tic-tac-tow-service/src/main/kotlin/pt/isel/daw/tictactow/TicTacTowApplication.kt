@@ -14,6 +14,7 @@ import pt.isel.daw.tictactow.http.pipeline.AuthenticationInterceptor
 import pt.isel.daw.tictactow.http.pipeline.UserArgumentResolver
 import pt.isel.daw.tictactow.repository.jdbi.configure
 import pt.isel.daw.tictactow.utils.Sha256TokenEncoder
+import java.time.Instant
 
 @SpringBootApplication
 class TicTacTowApplication {
@@ -29,6 +30,11 @@ class TicTacTowApplication {
 
     @Bean
     fun tokenEncoder() = Sha256TokenEncoder()
+
+    @Bean
+    fun clock() = object : Clock {
+        override fun now() = Instant.now()
+    }
 }
 
 // QUESTION: why cannot this be in TicTacTowApplication
