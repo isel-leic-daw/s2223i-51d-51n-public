@@ -3,10 +3,9 @@ package pt.isel.daw.tictactow.domain
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.fail
 import org.junit.jupiter.api.Test
-import pt.isel.daw.tictactow.Clock
 import pt.isel.daw.tictactow.RealClock
+import pt.isel.daw.tictactow.utils.TestClock
 import java.time.Duration
-import java.time.Instant
 
 class GameLogicTests {
 
@@ -215,16 +214,5 @@ class GameLogicTests {
         // our test players
         private val alice = User(1, "alice", PasswordValidationInfo(""))
         private val bob = User(2, "alice", PasswordValidationInfo(""))
-    }
-
-    class TestClock : Clock {
-
-        private var now = Instant.ofEpochSecond(0)
-
-        override fun now(): Instant = now
-
-        fun advance(duration: Duration) {
-            now += duration
-        }
     }
 }

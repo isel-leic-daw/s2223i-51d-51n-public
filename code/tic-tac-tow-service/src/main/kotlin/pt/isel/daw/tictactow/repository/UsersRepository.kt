@@ -1,8 +1,10 @@
 package pt.isel.daw.tictactow.repository
 
 import pt.isel.daw.tictactow.domain.PasswordValidationInfo
+import pt.isel.daw.tictactow.domain.Token
 import pt.isel.daw.tictactow.domain.TokenValidationInfo
 import pt.isel.daw.tictactow.domain.User
+import java.time.Instant
 
 interface UsersRepository {
 
@@ -13,9 +15,11 @@ interface UsersRepository {
 
     fun getUserByUsername(username: String): User?
 
-    fun getUserByTokenValidationInfo(tokenValidationInfo: TokenValidationInfo): User?
+    fun getTokenByTokenValidationInfo(tokenValidationInfo: TokenValidationInfo): Pair<User, Token>?
 
     fun isUserStoredByUsername(username: String): Boolean
 
-    fun createToken(userId: Int, token: TokenValidationInfo)
+    fun createToken(token: Token, maxTokens: Int)
+
+    fun updateTokenLastUsed(token: Token, now: Instant)
 }
