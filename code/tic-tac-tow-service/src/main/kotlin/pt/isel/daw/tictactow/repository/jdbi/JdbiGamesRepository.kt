@@ -71,6 +71,11 @@ class JdbiGamesRepository(
             .execute()
     }
 
+    override fun count(): Int =
+        handle.createQuery("select count(*) as count from dbo.Games")
+            .mapTo<Int>()
+            .single()
+
     companion object {
         private fun Update.bindBoard(name: String, board: Board) = run {
             bind(

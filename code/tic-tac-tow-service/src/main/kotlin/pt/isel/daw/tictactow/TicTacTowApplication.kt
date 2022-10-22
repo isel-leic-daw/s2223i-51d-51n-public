@@ -1,7 +1,10 @@
 package pt.isel.daw.tictactow
 
 import org.jdbi.v3.core.Jdbi
+import org.postgresql.PGProperty
 import org.postgresql.ds.PGSimpleDataSource
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
@@ -19,11 +22,24 @@ import java.time.Instant
 @SpringBootApplication
 class TicTacTowApplication {
     @Bean
-    fun jdbi() = Jdbi.create(
-        PGSimpleDataSource().apply {
-            setURL("jdbc:postgresql://localhost:5432/db?user=dbuser&password=changeit")
+    fun jdbi(): Jdbi {
+        val postgresUri =
+            System.getenv("POSTGRES_URI")
+                ?: "jdbc:postgresql://localhost:5432/db?user=dbuser&password=changeit"
+
+        val dataSource = PGSimpleDataSource().apply {
+            setURL(postgresUri)
         }
-    ).configure()
+
+        // Be careful not to disclose the credentials.
+        logger.info(
+            "Using PostgreSQL located at '{}:{}'",
+            dataSource.getProperty(PGProperty.PG_HOST),
+            dataSource.getProperty(PGProperty.PG_PORT),
+        )
+
+        return Jdbi.create(dataSource).configure()
+    }
 
     @Bean
     fun passwordEncoder() = BCryptPasswordEncoder()
@@ -34,6 +50,10 @@ class TicTacTowApplication {
     @Bean
     fun clock() = object : Clock {
         override fun now() = Instant.now()
+    }
+
+    companion object {
+        private val logger: Logger = LoggerFactory.getLogger(TicTacTowApplication::class.java)
     }
 }
 
