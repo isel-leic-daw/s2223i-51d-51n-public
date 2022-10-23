@@ -163,7 +163,7 @@
 - Continuation of the previous lesson.
 - The Spring context request scope has a way to associate managed beans to HTTP requests.
 
-## Lesson 7 - 2022-10-11 (planned)
+## Lesson 7 - 2022-10-11
 
 - Web architecture review [https://www.w3.org/TR/webarch/](https://www.w3.org/TR/webarch/)
     - Web as an information space where the items of interest are _resources_.
@@ -216,13 +216,6 @@
             - A link object has: `href`, `templated`, `type`, ...
         - _Embedded resources_ represented in the special `_embedded` field.
         - No support for representing actions, i.e., non-safe interactions.
-
-    - [HAL-FORMS](https://rwcbook.github.io/hal-forms/) - draft
-        - Main idea:
-            - HAL representation contains links to resources that represent non-safe interactions.
-                - Obtaining such a resource is a safe-interaction, performed via a `GET` request.
-            - HAL-FORM representation contains information on how to perform a non-safe interaction.
-                - Very similar in objective to HTML forms.
     
     - [Siren: a hypermedia specification for representing entities](https://github.com/kevinswiber/siren)
         - Main ideas:
@@ -230,8 +223,59 @@
             - Grouping the non-link resource properties in a `properties` field.
             - The concept of `class`.
     
-    - [JSON:API](https://jsonapi.org/)
 
-## Lessin 8 - 2022-10-13 (planned)
+## Lesson 8 - 2022-10-13
 
 - Continuation of the previous lesson.
+
+## Lesson 9 - 2022-10-18
+
+- Laboratory class, supporting the project development.
+
+## Lesson 10 - 2022-10-20
+
+- Laboratory class, supporting the project development.
+
+## Lesson 11 - 2022-10-25
+
+- HTTP intermediaries
+    - From [https://www.rfc-editor.org/rfc/rfc9110#name-intermediaries](https://www.rfc-editor.org/rfc/rfc9110#name-intermediaries)
+    > "HTTP enables the use of intermediaries to satisfy requests through a chain of connections. There are three common forms of HTTP "intermediary": proxy, gateway, and tunnel"
+        
+    >"A "gateway" (a.k.a. "reverse proxy") is an intermediary that acts as an origin server for the outbound connection but translates received requests and forwards them inbound to another server or servers. Gateways are often used to encapsulate legacy or untrusted information services, to improve server performance through "accelerator" caching, and to enable partitioning or load balancing of HTTP services across multiple machines"
+
+    >"A "tunnel" acts as a blind relay between two connections without changing the messages. Once active, a tunnel is not considered a party to the HTTP communication, though the tunnel might have been initiated by an HTTP request. A tunnel ceases to exist when both ends of the relayed connection are closed. Tunnels are used to extend a virtual connection through an intermediary, such as when Transport Layer Security (TLS, [TLS13]) is used to establish confidential communication through a shared firewall proxy"
+
+    - The [NGINX Reverse Proxy](https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/)
+        - Overview of configuration.
+
+    - Analysis of a scenario using NGINX for load-balancing, based on docker compose
+        - [https://github.com/isel-leic-daw/s2223i-51d-51n-public/pull/11](https://github.com/isel-leic-daw/s2223i-51d-51n-public/pull/11)
+
+- Handling exceptions on Spring MVC
+    - The _controller advice_ concept.
+    - Using exceptions vs. return types.
+
+- Testing strategies for Spring MVC based applications.
+    - Unit tests without using the Spring context.
+    - Integration tests using the HTTP interface and an auto-started application.
+    - Tests using the Spring context, with bean overriding or bean mocking.
+        - Property injections.
+
+- Complementary notes on media type design
+
+    - [JSON:API](https://jsonapi.org/)
+
+    - [HAL-FORMS](https://rwcbook.github.io/hal-forms/) - draft
+            - Main idea:
+                - HAL representation contains links to resources that represent non-safe interactions.
+                    - Obtaining such a resource is a safe-interaction, performed via a `GET` request.
+                - HAL-FORM representation contains information on how to perform a non-safe interaction.
+                    - Very similar in objective to HTML forms.
+    
+
+## Lesson 12 - 2022-10-27
+
+- Continuation of the previous lesson.
+
+
