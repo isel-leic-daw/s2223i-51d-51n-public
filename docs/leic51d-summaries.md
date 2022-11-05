@@ -281,4 +281,81 @@
 
 - Continuation of the previous lesson.
 
+(National Holiday on Tuesday)
 
+## Lesson 13 - 2022-11-03
+
+- Phase 1 project presentations.
+
+## Lesson 14 - 2022-11-08
+
+- The Browser as an application execution platform.
+    - Document loading.
+    - JavaScript loading and execution environment.
+        - Immediate execution versys deferred execution.
+        - Loading of multiple JavaScript files.
+            - Behaviour without using a module system.
+                - Single namespace for all the top-level symbols in the file.
+                    - Clashing between symbols
+            - Behaviour using the [ECMAScript Modules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules)
+                - Using `<script src="..." type="module"></script>`.
+                - Importing a module from another module using the `import` statement.
+                    - Individual requests for each module.
+                    - Single execution of the module top-level code.
+                - One HTTP request per imported module.
+                    - An applicaition can have many modules, both created for the application or from used libraries.
+                    - A module is a mechanism to organize and isolate code. We should not need to reduce the module count for efficiency purposes.
+                    - Solution: bundling multiple _source_ modules into a single (or few) _load_ level modules. I.e. the source code module organization is not the same as the browser-loaded module organization.
+                        - This means that now there is a build process required, since the JavaScript source files are not same as the JavaScript files provided to the browser.
+            - Creating the build process.
+                - Create an NPM project
+                    - Why:
+                        - To have a build automation tool.
+                        - To run node-based tools, such as the "bundler"
+                        - to include third-party libraries available on NPM
+                    - `npm init`
+                    - `npm install webpack-cli --save-dev`
+                        - `webpack-cli` is a Command Line Interface (CLI) application to do the bundling
+                        - `--save-dev` to save the dependency on `package.json` as a development dependency, i.e., a dependency used to develop/build the project and not to run the result of the project.
+                    - Set `package.json` `scripts/build` to call `webpack`.
+                - Copy source files to the `src` folder (by default webpack uses that as the JavaScript files location).
+                - Rename the entry point module to `index.js` (again, it's the default webpack assumption).
+                - Run `npm run build` to run the `build` script, which calls the `webpack` CLI tool.
+                    - This will create a `dist` folder with the bundle file, called `main.js`.
+                    - Change the `script` element to use `dist/main.js` and observe the result.
+                    - Observe the `dist/main.js` contents and be marvelled.
+                - Using third-party libraries
+                    - Run `npm i urijs --save`
+                    - Use `URITemplate` imported from 'urijs' in one of the modules.
+                    - Observe the `dist/main.js` contents again.
+                - Configuring the webpack behavior
+                    - Create the `webpack.config.js` file.
+                    ```
+                    module.exports = {
+                        mode: 'development'
+                    }
+                    ```
+                    - Observe the `dist/main.js` contents yet again.
+                - Automating the build and HTML serving process
+                    - `npm i webpack-dev-server --save-dev`.
+                    - Set `package.json` `scripts/start` to call `webpack serve`.
+                    - `webpack serve` keeps running and
+                        - Rebuilding the project when changes are detected.
+                        - Serving the updated bundle.
+                    - IMPORTANT: this is a development-time tool. In production, the bundled file will not be served using Webpack.
+
+- The [TypeScript language](https://www.typescriptlang.org/)
+    - JavaScript plus static type information.
+    - Using in on our development workflow.
+        - `npm i typescript ts-loader --save-dev`.
+        - Edit `webpack.config.js` to configure a _loader_.
+        - Create the file `tsconfig.json` to configure the TypeScript compilation.
+    - The type information in the source files is *checked* and *erased* on the compiled files.
+    - The type system
+        - Primitive types.
+        - Type annotations and inference.
+        - Array types.
+        - Function types.
+        - Object types and type aliases.
+        - Union types, type narrowing, literal types, and descriminated union types.
+        
