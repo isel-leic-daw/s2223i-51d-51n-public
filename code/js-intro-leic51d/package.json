@@ -1,0 +1,21 @@
+{
+  "name": "js-intro-leic51d",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "build": "webpack",
+    "start": "webpack serve"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "ts-loader": "^9.4.1",
+    "typescript": "^4.8.4",
+    "webpack-cli": "^4.10.0",
+    "webpack-dev-server": "^4.11.1"
+  },
+  "dependencies": {
+    "urijs": "^1.19.11"
+  }
+}
