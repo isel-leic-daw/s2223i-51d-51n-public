@@ -2,6 +2,8 @@ import { sayHello } from './module1.js'
 import * as URITemplate from 'urijs/src/URITemplate'
 import { add } from './module3'
 
+import { test } from './test'
+
 let a = "hello"
 let div = document.getElementById("the-div")
 console.log(a)
@@ -15,3 +17,5 @@ const uri = uriTemplate.expand({
 console.log(`The URI is ${uri}`)
 const res = add(2, 3)
 console.log(`2 + 3 = ${res}`)
+
+test()
