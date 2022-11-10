@@ -38,7 +38,6 @@ function doAnotherThing(result: Result) {
     switch(result.kind) {
         case "network-error": {
             console.log(result.error)
-            console.log(result.status)
             break;
         }
         
