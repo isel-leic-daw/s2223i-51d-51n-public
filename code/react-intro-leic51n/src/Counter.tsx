@@ -3,17 +3,22 @@ import {
     useState
 } from 'react'
 
-export function Counter({ label }: { label: string }) {
+type CounterProps = {
+    label: string,
+    value: number,
+    onClick: (value: number) => void,
+}
+export function Counter({ label, value, onClick }: CounterProps) {
 
-    const [counter, setCounter] = useState(0)
     const [clicks, setClicks] = useState(0)
-    
+
     console.log("running Counter")
     return (
         <div>
-            <button onClick={() => { setCounter(counter - 1); setClicks(clicks + 1) }}>-</button>
-            {counter}, {clicks}
-            <button onClick={() => { setCounter(counter + 1); setClicks(clicks + 1) }}>+</button>
+            {label}:
+            <button onClick={() => { setClicks(clicks + 1); onClick(value - 1) }}>-</button>
+            {value}, {clicks}
+            <button onClick={() => { setClicks(clicks + 1); onClick(value + 1) }}>+</button>
         </div>
     )
 
