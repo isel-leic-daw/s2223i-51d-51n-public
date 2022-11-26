@@ -9,14 +9,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.4.3"
   },
   "devDependencies": {
+    "@types/react": "^18.0.25",
+    "@types/react-dom": "^18.0.8",
     "ts-loader": "^9.4.1",
     "typescript": "^4.8.4",
     "webpack-cli": "^4.10.0",
-    "webpack-dev-server": "^4.11.1",
-    "@types/react": "^18.0.25",
-    "@types/react-dom": "^18.0.8"
+    "webpack-dev-server": "^4.11.1"
   }
 }
