@@ -1,6 +1,6 @@
 # Calendar
 
-please chech this file Git history for calendar changes.
+ªlease check this file Git history for calendar changes.
 
 ## Important dates:
 
