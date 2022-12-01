@@ -44,6 +44,7 @@ dependencies {
         runtimeOnly("io.netty:netty-resolver-dns-native-macos:4.1.82.Final:osx-aarch_64")
     }
 	testImplementation(kotlin("test"))
+    testImplementation("org.mockito.kotlin:mockito-kotlin:4.0.0")
 
 	ktlint("com.pinterest:ktlint:0.47.1")
 }
