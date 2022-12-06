@@ -1,10 +1,13 @@
 package pt.isel.daw.tictactow.http
 
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.MethodSource
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.test.web.reactive.server.WebTestClient
 import java.util.*
+import java.util.stream.Stream
 import kotlin.test.assertTrue
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -168,6 +171,51 @@ class UserTests {
             .jsonPath("type").isEqualTo(
                 "https://github.com/isel-leic-daw/s2223i-51d-51n-public/tree/main/code/" +
                     "tic-tac-tow-service/docs/problems/insecure-password"
+            )
+    }
+
+    @ParameterizedTest
+    @MethodSource
+    fun `user creation produces an error request content is not valid`(input: Any) {
+        // given: an HTTP client
+        val client = WebTestClient.bindToServer().baseUrl("http://localhost:$port").build()
+
+        // when: creating a user with invalid data
+        // then: the response is a 400 with the proper type
+        client.post().uri("/users")
+            .bodyValue(
+                input
+            )
+            .exchange()
+            .expectStatus().isBadRequest
+            .expectHeader().contentType("application/problem+json")
+            .expectBody()
+            .jsonPath("type").isEqualTo(
+                "https://github.com/isel-leic-daw/s2223i-51d-51n-public/tree/main/code/" +
+                    "tic-tac-tow-service/docs/problems/invalid-request-content"
+            )
+    }
+
+    companion object {
+        @JvmStatic
+        fun `user creation produces an error request content is not valid`(): Stream<Any> =
+            Stream.of(
+                mapOf<String, Any>(
+                    // no username or password
+                ),
+                mapOf(
+                    "username" to "alice"
+                    // no password
+                ),
+                mapOf(
+                    "password" to "bad",
+                    // no username
+                ),
+                mapOf(
+                    "username" to listOf<String>(),
+                    "password" to "changeit",
+                    // invalid username type
+                ),
             )
     }
 }
