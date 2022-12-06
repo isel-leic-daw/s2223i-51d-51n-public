@@ -1,32 +1,62 @@
 import * as React from 'react'
 import {
-    createBrowserRouter, Link, RouterProvider, useParams,
+    createBrowserRouter, Link, Outlet, RouterProvider, useParams,
 } from 'react-router-dom'
+import { AuthnContainer, useCurrentUser } from './Authn'
+import { Login } from './Login'
+import { RequireAuthn } from './RequireAuthn'
 
 const router = createBrowserRouter([
     {
         "path": "/",
-        "element": <Home />
-    },
-    {
-        "path": "/path1",
-        "element": <Screen1 />
-    },
-    {
-        "path": "/path2",
-        "element": <Screen2 />
-    },
-    {
-        "path": "/path3",
-        "element": <Screen3 />
-    },
-    {
-        "path": "/users/:uid",
-        "element": <UserDetail />
-    },
-    {
-        "path": "/users/:uid/games/:gid",
-        "element": <UserGameDetail />
+        "element": <AuthnContainer><Outlet /></AuthnContainer>,
+        "children": [
+            {
+                "path": "/",
+                "element": <Home />,
+                "children": [
+                    {
+                        "path": "/authors",
+                        "element": <Authors />,
+                    },
+                    {
+                        "path": "/users/:uid",
+                        "element": <UserDetail />,
+                        "children": [
+                            {
+                                "path": "latest",
+                                "element": <UserLatestGames />,
+                            },
+                            {
+                                "path": "stats",
+                                "element": <UserStats />,
+                            },
+                        ]
+                    }
+                ]
+
+            },
+            {
+                "path": "/login",
+                "element": <Login />
+            },
+            {
+                "path": "/me",
+                "element": <RequireAuthn><Me /></RequireAuthn>
+            },
+            {
+                "path": "/path1",
+                "element": <Screen1 />
+            },
+            {
+                "path": "/path2",
+                "element": <Screen2 />
+            },
+            {
+                "path": "/path3",
+                "element": <Screen3 />
+            },
+        ]
     }
 ])
 
@@ -36,11 +66,22 @@ export function App() {
     )
 }
 
+export function Me() {
+    const currentUser = useCurrentUser()
+    return (
+        <div>
+            {`Hello ${currentUser}`}
+        </div>
+    )
+}
+
 function Home() {
     return (
         <div>
             <h1>Home</h1>
             <ol>
+                <li><Link to="/me">Me</Link></li>
+                <li><Link to="/authors">Authors</Link></li>
                 <li><a href="/path1">screen 1 (using a)</a></li>
                 <li><Link to="/path1">screen 1</Link></li>
                 <li><Link to="/path2">screen 2</Link></li>
@@ -49,6 +90,20 @@ function Home() {
                 <li><Link to="/users/abc">User abc</Link></li>
                 <li><Link to="/users/123/games/xyz">User 123 Game xyz</Link></li>
             </ol>
+            <h3>Child routes</h3>
+            <Outlet />
+        </div>
+    )
+}
+
+function Authors() {
+    return (
+        <div>
+            Authors:
+            <ul>
+                <li>Alice</li>
+                <li>Bob</li>
+            </ul>
         </div>
     )
 }
@@ -78,17 +133,44 @@ function Screen3() {
 }
 
 function UserDetail() {
-    const {uid} = useParams()
+    const { uid } = useParams()
     return (
         <div>
             <h2>User Detail</h2>
             {uid}
+            <p><Link to="latest">Latest Games</Link></p>
+            <p><Link to="stats">Statistics</Link></p>
+            <Outlet />
         </div>
     )
 }
 
+function UserLatestGames() {
+    return (
+        <div>
+            <h4>Latest Games</h4>
+            <ol>
+                <li>...</li>
+                <li>...</li>
+            </ol>
+        </div>
+    )
+}
+
+function UserStats() {
+    return (
+        <div>
+            <h4>Statistics</h4>
+            <p>Wins: ... </p>
+            <p>Draws: ... </p>
+            <p>Losses: ... </p>
+        </div>
+    )
+}
+
+
 function UserGameDetail() {
-    const {gid, uid} = useParams()
+    const { gid, uid } = useParams()
     return (
         <div>
             <h2>User Game Detail</h2>
@@ -96,4 +178,3 @@ function UserGameDetail() {
         </div>
     )
 }
- 
