@@ -9,7 +9,11 @@ import pt.isel.daw.tictactow.infra.siren
 class HomeController {
 
     @GetMapping(Uris.HOME)
-    fun getHome() = siren(HomeOutputModel("Made for teaching purposes by P. Félix")) {
+    fun getHome() = siren(
+        HomeOutputModel(
+            credits = "Made for teaching purposes by P. Félix",
+        )
+    ) {
         link(Uris.home(), Rels.SELF)
         link(Uris.home(), Rels.HOME)
     }

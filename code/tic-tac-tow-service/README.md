@@ -22,3 +22,13 @@ psql -U dbuser -d db
   * `\d <table>` - show table.
   * `select ... ;` - execute query.
   * `\q` - quit `psql`.
+
+* Start the full composition
+```
+./gradlew composeUp
+```
+
+* Loop curl
+```
+while true; do curl -w "\n" http://localhost:8080/status/hostname; done
+```

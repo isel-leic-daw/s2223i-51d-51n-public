@@ -7,4 +7,5 @@ interface GamesRepository {
     fun insert(game: Game)
     fun getById(id: UUID): Game?
     fun update(game: Game)
+    fun count(): Int
 }

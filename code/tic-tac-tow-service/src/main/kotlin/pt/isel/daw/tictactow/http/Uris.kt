@@ -7,6 +7,9 @@ import java.net.URI
 object Uris {
 
     const val HOME = "/"
+    const val STATUS = "/status"
+    const val STATUS_HOSTNAME = "/status/hostname"
+    const val STATUS_IP = "/status/ip"
     const val GAME_BY_ID = "/games/{gid}"
 
     fun home(): URI = URI(HOME)

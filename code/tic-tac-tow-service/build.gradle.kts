@@ -60,6 +60,14 @@ tasks.withType<Test> {
 	useJUnitPlatform()
 }
 
+task<Copy>("extractUberJar") {
+    dependsOn("assemble")
+    // opens the JAR containing everything...
+    from(zipTree("$buildDir/libs/${rootProject.name}-$version.jar"))
+    // ... into the 'build/dependency' folder
+    into("build/dependency")
+}
+
 task<Exec>("dbTestsUp") {
     commandLine("docker-compose", "up", "-d", "--build", "--force-recreate", "db-tests")
 }
@@ -71,6 +79,11 @@ task<Exec>("dbTestsWait") {
 
 task<Exec>("dbTestsDown") {
     commandLine("docker-compose", "down")
+}
+
+task<Exec>("composeUp") {
+    commandLine("docker-compose", "up", "--build", "--force-recreate")
+    dependsOn("extractUberJar")
 }
 
 // from https://pinterest.github.io/ktlint/install/integrations/#custom-gradle-integration-with-kotlin-dsl
